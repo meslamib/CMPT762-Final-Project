@@ -1,0 +1,71 @@
+{% extends "base2.html" %}
+{% block body_block %}
+
+<form  action="{% url "list" %}" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+
+  <p> {{ form.non_field_errors }}</p>
+
+  <p>{{ form.imagfile.label_tag }}
+    {{ form.imagefile.help_text }}
+  </p>
+
+  <p> {{ form.imagefile.erros }}
+      {{ form.imagefile }}
+  </p>
+
+  <p> <input type="submit" name="upload_img" value="Upload">
+  </p>
+
+</form>
+
+{% if documents %}
+
+
+  <img src="{{ image_path1 }}" alt="" style ="position:absolute;height:350px; top:80px; left:500px; width:550px; border: #000000 6px outset" >
+
+  <div style = "display:inline-block; position:absolute; height:320px; top: 430px ;left:500px; width:550px", id="img_ex">
+
+  <p> <input type="submit" value="Click to start processing" style="background-color : Yellow; height:50px;" id="image_process"> </p>
+
+
+  <script type="text/javascript">
+  $(document).ready(function(){
+    $("#image_process").click(function(){
+
+      $('#img_ex').html('<img src="/static/processing.gif" width ="300" height="70"> Processing the Image...')
+
+      $.ajax({url: "/engine/",
+             type : 'get',
+             success: function(results){
+               $('#img_ex').html(results);
+
+              var div = document.getElementById('img_ex');
+
+              div.innerHTML = div.innerHTML + '<br/>';
+              div.innerHTML = div.innerHTML + "<span style='color: red'>"+"Results:".fontsize(6) ;
+              div.innerHTML = div.innerHTML + '<br/>';
+              div.innerHTML = div.innerHTML + '______________________________________________________________________';
+              div.innerHTML = div.innerHTML + '<br/>';
+              div.innerHTML = div.innerHTML + "<span style='color:blue'>"+"Image Check: ".fontsize(4) ;
+              div.innerHTML = div.innerHTML +  results.g1_pic;
+              div.innerHTML = div.innerHTML + '<br/>';
+              div.innerHTML = div.innerHTML + '______________________________________________________________________';
+              div.innerHTML = div.innerHTML + '<br/>';
+              div.innerHTML = div.innerHTML + "<span style='color:blue'>"+"Most Probable Type: ".fontsize(4) ;
+              div.innerHTML = div.innerHTML +  results.typ;
+              div.innerHTML = div.innerHTML + '<br/>';
+              div.innerHTML = div.innerHTML + '______________________________________________________________________';
+
+
+
+             }
+      });
+    });
+  });
+  </script>
+
+  </div>
+
+{% endif %}
+{% endblock %}
