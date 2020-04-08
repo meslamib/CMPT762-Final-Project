@@ -1,2 +1,2 @@
 # CMPT762-Final-Project
-Electron Microscopy Image Classification 
+Computer Vision Project: Electron Microscopy Image Classification 
